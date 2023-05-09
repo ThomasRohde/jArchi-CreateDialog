@@ -128,4 +128,4 @@ Widgets are the main interactive visual elements of the dialogs. Currently the a
 ## dialogResult ##
 The dialog result is available after the succesful execution of [createDialog]() as a member object.
 
-The result is created as a flattened version of the [dialogObject]()#dialogobject, where every member of the `properties` objects are created as new members with their current widget value as the value.
+The result is created as a flattened version of the [dialogObject](#dialogobject), where every member of the `properties` objects are created as new members with their current widget value as the value.
