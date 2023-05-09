@@ -2,7 +2,7 @@
 # Archi Dialogs #
 This model describes and documents the CreateDialog script library.
 # Introduction to the CreateDialog library #
-![Introduction to the CreateDialog library](../images/Introduction to the CreateDialog library.png)
+![Introduction to the CreateDialog library](images/Introduction to the CreateDialog library.png)
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
 
 This code is the "Hello World" of CreateDialog.
