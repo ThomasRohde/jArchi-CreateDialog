@@ -8,13 +8,11 @@ This code is the "Hello World" of CreateDialog.
 	let dialog = createDialog( {
     	type: "form",
 		title: "Hello",
-    		message: "World"
+		message: "World"
 	});
 
 	if (dialog.open()) {
-    		dialog.persist();
+		dialog.persist();
 	};
-
-<button onclick="doEvent('Run')">Run!</button>
 
 Currently, the CreateDialog libray supports two kinds of dialogs, the TitleAndDialog dialog, and the Wizard dialog.
