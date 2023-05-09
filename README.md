@@ -1,5 +1,7 @@
+
 # Archi Dialogs #
-This model describes and documents the CreateDialog script library.# Introduction to the CreateDialog library #
+This model describes and documents the CreateDialog script library.
+# Introduction to the CreateDialog library #
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
 
 This code is the "Hello World" of CreateDialog.
@@ -16,9 +18,12 @@ This code is the "Hello World" of CreateDialog.
 
 <button onclick="doEvent('Run')">Run!</button>
 
-Currently, the CreateDialog libray supports two kinds of dialogs, the TitleAndDialog dialog, and the Wizard dialog.## titleAndDialog ##
-The Eclipse JFace TitleAreaDialog class is a versatile and customizable dialog that provides a reserved space for UI elements and controls.## wizard ##
-The Eclipse JFace Wizard is a powerful and flexible framework for creating multi-step user interfaces, allowing you to guide users through a sequence of tasks or decision-making processes. It is particularly useful when you have complex or interdependent user inputs that require multiple steps to complete.# Creating a dialog #
+Currently, the CreateDialog libray supports two kinds of dialogs, the TitleAndDialog dialog, and the Wizard dialog.
+## titleAndDialog ##
+The Eclipse JFace TitleAreaDialog class is a versatile and customizable dialog that provides a reserved space for UI elements and controls.
+## wizard ##
+The Eclipse JFace Wizard is a powerful and flexible framework for creating multi-step user interfaces, allowing you to guide users through a sequence of tasks or decision-making processes. It is particularly useful when you have complex or interdependent user inputs that require multiple steps to complete.
+# Creating a dialog #
 The [createDialog](#createdialog) function takes a layout object and an optional object, setting various options for the dialog.
 
 |Option			|Dialog			|Values			|Description 			|
@@ -77,9 +82,12 @@ The function returns an dialog object providing the following functionalities:
 - [persist()](#persist) - persists any changes to model objects and properties 
 - [dialogResult](#dialogresult) - the result of the dialog data entry formatted as an object
 
-Read about crafting a [dialogObject](#dialogobject).### persist() ###
+Read about crafting a [dialogObject](#dialogobject).
+### persist() ###
+
 ### open() ###
-This function opens the dialog, and returns truthy if an Ok button has been clicked.## dialogObject ##
+This function opens the dialog, and returns truthy if an Ok button has been clicked.
+## dialogObject ##
 The `dialogObject` describes the layout and functionality of a dialog as a JavaScript object. The general layout is formatted as this:
 
 	let dialogObject = {
@@ -102,14 +110,21 @@ The `topLevelType` can be one of the following types:
 - [folder](#folder) - A composite of one or more `forms`. The `forms` are selectable by clicking a top level folder button
 - [pages](#pages) - A sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 - [group](#group) - A composite of widgets framed by a titled border. Typically used on a form to group related widgets
+
 ### sash ###
+
 ### form ###
+
 ### pages ###
+
 ### group ###
+
 ### Widgets ###
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
-- [form](#form) - the form can both be a top level widget as well a simple widget used for grouping#### form-widget ####
+- [form](#form) - the form can both be a top level widget as well a simple widget used for grouping
+#### form-widget ####
+
 ## dialogResult ##
 The dialog result is available after the succesful execution of [createDialog]() as a member object.
 
