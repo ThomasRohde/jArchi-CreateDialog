@@ -1,40 +1,172 @@
 console.show();
 console.clear();
 
-load(__SCRIPTS_DIR__ + 'Archi-scripts/lib/CreateEclipseForm.js');
-load(__SCRIPTS_DIR__ + 'Archi-scripts/lib/modeltrap.js');
+load(__DIR__ + 'lib/CreateEclipseForm.js');
+load(__DIR__ + 'lib/modeltrap.js');
+load(__DIR__ + 'lib/marked.js');
 
 const Color = Java.type('org.eclipse.swt.graphics.Color');
+const BrowserEditorInput = Java.type('com.archimatetool.editor.browser.BrowserEditorInput');
+const IBrowserEditor = Java.type('com.archimatetool.editor.browser.IBrowserEditor');
+const EditorManager = Java.type('com.archimatetool.editor.ui.services.EditorManager');
+
+const outputSVG = false;
+const outputImages = true;
+const outputMarkdown = true;
+const githubImageDirectory = "https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/";
+
+function documentModel(path) {
+    function markdownLevel(level) {
+        return "#".repeat(level);
+    };
+
+    function titleString(level, string) {
+        return "\n" + markdownLevel(level) + " " + string + " " + markdownLevel(level) + "\n";
+    }
+
+    function outputElement(level, element) {
+        let title = outputMarkdown ? titleString(level, element.name) : marked.parse(titleString(level, element.name));
+        let body = outputMarkdown ? element.documentation : marked.parse(element.documentation);
+        let image = "";
+        if (outputSVG && $(element).is("archimate-diagram-model") || $(element).is("sketch-model") || $(element).is("canvas-model")) {
+            let outputView = $(element).prop("dialog:outputView");
+            if (outputView !== "false") image = $.model.renderViewAsSVGString(element, true);
+        }
+        if (outputImages && $(element).is("archimate-diagram-model") || $(element).is("sketch-model") || $(element).is("canvas-model")) {
+            let outputView = $(element).prop("dialog:outputView");
+            if (outputView !== "false") {
+                $.model.renderViewToFile(element, path + "images\\" + element.name + ".png", "PNG");
+                if (outputMarkdown)
+                    image = `![${element.name}](${githubImageDirectory}${element.name.replaceAll(" ","%20") + ".png"})` + "\n";
+                else
+                    image = `<img>src='images/${element.name + ".png"}'</img>` + "\n";
+            }
+        }
+        let output = title + image + body;
+        let children = $(element).children().not("relationship");
+        for (const child of children) {
+            output += outputElement(level + 1, child);
+        }
+        return output;
+    };
+
+    let markdown = titleString(1, model.name);
+    markdown += model.purpose;
+
+    let body = outputMarkdown ? markdown : marked.parse(markdown) + "\n";
+
+    let views = $("view");
+    views.each(v => {
+        body += outputElement(1, v);
+    })
+
+    if (outputMarkdown) return body;
+
+    let output = /*html*/ `
+    <html>
+        <style>
+            html {
+                font-family: Segoe UI;
+                font-size: 12
+            }
+            table {
+                font-size: 12px;
+                width: 100%;
+            }
+            th, td {
+               border-bottom: 1px solid #ddd;
+               font-size: 12px;
+            }
+            pre {
+                background: #f4f4f4;
+                border: 1px solid #ddd;
+                border-left: 3px solid #f36d33;
+                color: #666;
+                page-break-inside: avoid;
+                font-family: monospace;
+                font-size: 12px;
+                line-height: 1;
+                margin-bottom: 1em;
+                max-width: 100%;
+                overflow: auto;
+                padding: 1em 1.5em;
+                display: block;
+                word-wrap: break-word;
+            }
+            button {
+                background: transparent;
+                border: none;
+                font-size: 0;
+                padding: 0;
+                margin: 0;
+                width: 0;
+                height: 0;
+            }
+            body {
+                counter-reset: h1;
+            }
+            h1 {
+                counter-reset: h2;
+            }
+            h2 {
+                counter-reset: h3;
+            }
+            h3 {
+                counter-reset: h4;
+            }
+            h1:before {
+                counter-increment: h1;
+                content: counter(h1) ". ";
+            }
+            h2:before {
+                counter-increment: h2;
+                content: counter(h1) "." counter(h2) ". ";
+            }
+            h3:before {
+                counter-increment: h3;
+                content: counter(h1) "." counter(h2) "." counter(h3) ". ";
+            }
+            h4:before {
+                counter-increment: h4;
+                content: counter(h1) "." counter(h2) "." counter(h3) "." counter(h4) ". ";
+            }
+        </style>
+        <body>
+            ${body}
+        </body>
+    </html>`;
+    return output;
+}
 
 let demoOptionsCreatingADialog = {
     dialogType: "titleAndDialog",
     width: 1200,
     height: 800,
-         buttons: {
-            test: {
-                label: "Hello",
-                selection: function (button, widget) {
-                    window.alert("World")
-                } 
-            },
-            ok: {
-                label: "&Ok",
-                value: "Ok pressed",
-                okButton: true
-            },
-            cancel: {
-                label: "&Cancel",
-                value: "Cancel pressed",
-                cancelButton: true
+    buttons: {
+        test: {
+            label: "Hello",
+            selection: function (button, widget) {
+                window.alert("World")
             }
-        } 
+        },
+        ok: {
+            label: "&Ok",
+            value: "Ok pressed",
+            okButton: true
+        },
+        cancel: {
+            label: "&Cancel",
+            value: "Cancel pressed",
+            cancelButton: true
+        }
+    }
 };
 
 let browserButton = function (element, buttonId) {
     let prop = "dialog:openDialog" + (buttonId ? "-" + buttonId : "");
     let propValue = $(element).prop(prop);
     let dialogOptions = null;
-    switch(element.name) {
+    switch (element.name) {
         case "Creating a dialog":
             dialogOptions = demoOptionsCreatingADialog;
             break;
@@ -95,11 +227,40 @@ let customOptions = {
     dialogType: "titleAndDialog",
     width: 1600,
     height: 900,
+    buttons: {
+        Markdown: {
+            label: "Markdown",
+            value: "Markdown",
+            selection: function (button, widget) {               
+                let System = Java.type('java.lang.System');
+                let path = System.getProperty("java.io.tmpdir");
+                let tmpfile = path + `\\${model.name}\\${model.name}.md`;
+                
+                let html = documentModel(path + `${model.name}\\`);
+                try {
+                    $.fs.writeFile(tmpfile, html); 
+                    window.alert(`Markdown exported to: ` + path + `${model.name}\\`);
+                }
+                catch (e) {
+                    window.alert("Some thing went wrong!", e);
+                }
+            } 
+        },
+        cancel: {
+            label: "&Cancel",
+            value: "Cancel pressed",
+            cancelButton: true
+        }
+    }
 };
 
 let dialog = createDialog(ModelExplorer, customOptions);
 
 dialog.open();
+
+
+
+
 
 
 
