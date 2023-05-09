@@ -1,0 +1,105 @@
+console.show();
+console.clear();
+
+load(__SCRIPTS_DIR__ + 'Archi-scripts/lib/CreateEclipseForm.js');
+load(__SCRIPTS_DIR__ + 'Archi-scripts/lib/modeltrap.js');
+
+const Color = Java.type('org.eclipse.swt.graphics.Color');
+
+let demoOptionsCreatingADialog = {
+    dialogType: "titleAndDialog",
+    width: 1200,
+    height: 800,
+         buttons: {
+            test: {
+                label: "Hello",
+                selection: function (button, widget) {
+                    window.alert("World")
+                } 
+            },
+            ok: {
+                label: "&Ok",
+                value: "Ok pressed",
+                okButton: true
+            },
+            cancel: {
+                label: "&Cancel",
+                value: "Cancel pressed",
+                cancelButton: true
+            }
+        } 
+};
+
+let browserButton = function (element, buttonId) {
+    let prop = "dialog:openDialog" + (buttonId ? "-" + buttonId : "");
+    let propValue = $(element).prop(prop);
+    let dialogOptions = null;
+    switch(element.name) {
+        case "Creating a dialog":
+            dialogOptions = demoOptionsCreatingADialog;
+            break;
+    }
+    if (propValue) {
+        let dialogObject = JSON.parse(propValue);
+        let dialog = null;
+        if (dialogOptions) dialog = createDialog(dialogObject, dialogOptions);
+        else dialog = createDialog(dialogObject);
+        dialog.open();
+    }
+}
+
+let ModelExplorer = {
+    type: "sash",
+    title: model.name,
+    message: model.purpose,
+    direction: "horizontal",
+    weights: [2, 5],
+    properties: {
+        left: {
+            type: "form",
+            margin: 0,
+            columns: 1,
+            properties: {
+                treeWidget: {
+                    type: "tree",
+                    fill: true,
+                    relations: false,
+                    objects: $("view"),
+                    tooltip: "Select tree item",
+                    selection: [{
+                        source: "documentation",
+                        target: "documentation"
+                    }]
+                }
+            }
+
+        },
+        right: {
+            type: "form",
+            margin: 0,
+            columns: 1,
+            properties: {
+                documentation: {
+                    type: "browser",
+                    doEvent: browserButton,
+                    tree: "treeWidget",
+                    fill: true,
+                    multi: true,
+                }
+            }
+        }
+    }
+}
+
+let customOptions = {
+    dialogType: "titleAndDialog",
+    width: 1600,
+    height: 900,
+};
+
+let dialog = createDialog(ModelExplorer, customOptions);
+
+dialog.open();
+
+
+
