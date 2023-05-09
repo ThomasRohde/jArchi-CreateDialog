@@ -2,7 +2,6 @@
 # Archi Dialogs #
 This model describes and documents the CreateDialog script library.
 # Introduction to the CreateDialog library #
-
 ![Introduction to the CreateDialog library](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/Introduction%20to%20the%20CreateDialog%20library.png)
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
 
@@ -26,7 +25,6 @@ The Eclipse JFace TitleAreaDialog class is a versatile and customizable dialog t
 ## wizard ##
 The Eclipse JFace Wizard is a powerful and flexible framework for creating multi-step user interfaces, allowing you to guide users through a sequence of tasks or decision-making processes. It is particularly useful when you have complex or interdependent user inputs that require multiple steps to complete.
 # Creating a dialog #
-![Creating a dialog](images/Creating a dialog.png?raw=true "Creating a dialog")
 The [createDialog](#createdialog) function takes a layout object and an optional object, setting various options for the dialog.
 
 |Option			|Dialog			|Values			|Description 			|
