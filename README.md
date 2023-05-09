@@ -7,12 +7,12 @@ This code is the "Hello World" of CreateDialog.
 
 	let dialog = createDialog( {
     	type: "form",
-	    title: "Hello",
-    	message: "World"
+		title: "Hello",
+    		message: "World"
 	});
 
 	if (dialog.open()) {
-    	dialog.persist();
+    		dialog.persist();
 	};
 
 <button onclick="doEvent('Run')">Run!</button>
