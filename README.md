@@ -57,7 +57,8 @@ The following example options object creates a dialog with three buttons:
     };
 <button onclick="doEvent('Run')">Run!</button>
 
-The `ok` and `cancel` buttons recreate the standard buttons in a normal dialog box. The test button displays new dialog when pressed.## createDialog ##
+The `ok` and `cancel` buttons recreate the standard buttons in a normal dialog box. The test button displays new dialog when pressed.
+## createDialog ##
 #### Function: createDialog() ####
 
 ##### Usage #####
