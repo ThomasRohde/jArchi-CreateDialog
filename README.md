@@ -177,7 +177,7 @@ A `folder`is a composite of one or more forms. The forms are selectable by click
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
 
-A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically
-#### sash ####
 
+#### sash ####
+A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically
 ## Widgets ##
