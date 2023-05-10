@@ -81,31 +81,7 @@ The following example options object creates a dialog with three buttons:
 <button onclick="doEvent('Run')">Run!</button>
 
 The `ok` and `cancel` buttons recreate the standard buttons in a normal dialog box. The test button displays new dialog when pressed.
-## createDialog ##
-#### Function: createDialog() ####
-
-##### Usage #####
-
-    let dialog = createDialog(dialogObject);
-
-or
-
-    let dialog = createDialog(dialogObject, options);
-
-If no options are given to the function, a standard Eclipse JFace TitleAndDialog dialog will we created.
-
-The function returns an dialog object providing the following functionalities:
-
-- [open()](#open) - opens a modal dialog and waits for the user to exit. Returns `true` if Ok, or similar, is pressed or `false` otherwise.
-- [persist()](#persist) - persists any changes to model objects and properties 
-- [dialogResult](#dialogresult) - the result of the dialog data entry formatted as an object
-
-Read about crafting a [dialogObject](#dialogobject).
-### persist() ###
-
-### open() ###
-This function opens the dialog, and returns truthy if an Ok button has been clicked.
-## dialogObject ##
+## Top-level widgets ##
 The `dialogObject` describes the layout and functionality of a dialog as a JavaScript object. The general layout is formatted as this:
 
 	let dialogObject = {
@@ -129,15 +105,27 @@ The `topLevelType` can be one of the following types:
 - [pages](#pages) - A sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 - [group](#group) - A composite of widgets framed by a titled border. Typically used on a form to group related widgets
 
-### sash ###
-
 ### form ###
-![Form widget](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
-### pages ###
+![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
+Form description
+#### form ####
 
 ### group ###
+![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
+Group description
+#### group ####
 
-### Widgets ###
+### pages ###
+![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
+Pages description
+#### pages ####
+
+### sash ###
+![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
+Sash description
+#### sash ####
+
+## Widgets ##
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
 - [form](#form) - the form can both be a top level widget as well a simple widget used for grouping
@@ -154,35 +142,4 @@ Widgets are the main interactive visual elements of the dialogs. Currently the a
 - [color](#color)
 - [tree](#tree)
 - [scale](#scale)
-#### form-widget ####
-
-#### blank ####
-
-#### text ####
-
-#### browser ####
-
-#### option ####
-
-#### combo ####
-
-#### list ####
-
-#### checkbox ####
-
-#### radio ####
-
-#### button ####
-
-#### date ####
-
-#### color ####
-
-#### tree ####
-
-#### scale ####
-
-## dialogResult ##
-The dialog result is available after the succesful execution of [createDialog]() as a member object.
-
-The result is created as a flattened version of the [dialogObject](#dialogobject), where every member of the `properties` objects are created as new members with their current widget value as the value.
+## createDialog ##
