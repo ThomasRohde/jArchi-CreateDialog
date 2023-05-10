@@ -132,7 +132,7 @@ The `topLevelType` can be one of the following types:
 ### sash ###
 
 ### form ###
-
+![Form widget](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
 ### pages ###
 
 ### group ###
