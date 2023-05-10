@@ -82,7 +82,7 @@ or
 
     let dialog = createDialog(dialogObject, options);
 
-If no options are given to the function, a standard Eclipse JFace TitleAndDialog dialog will we created.
+If no options are given to the function, a standard Eclipse JFace TitleAndDialog dialog will be created.
 
 The function returns an dialog object providing the following functionalities:
 
@@ -153,31 +153,31 @@ Widgets are the main interactive visual elements of the dialogs. Currently the a
 ### form ###
 ![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
 
-
-#### form ####
 A `form` is a simple composite, that can contain one or more widgetTypes
+#### form ####
+
 ### group ###
 ![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
 
-
+A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets
 #### group ####
 A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
 
-
+The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 #### pages ####
 The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 ### folder ###
 ![folder](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/folder.png)
 
-
-#### folder ####
 A `folder`is a composite of one or more forms. The forms are selectable by clicking a top level folder button
+#### folder ####
+
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
 
-
-#### sash ####
 A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically
+#### sash ####
+
 ## Widgets ##
