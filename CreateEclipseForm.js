@@ -1002,7 +1002,7 @@ function createDialog(rootLayout,
                                         else if (element.type == "canvas-model-sticky") return "Sticky note";
                                         else if (element.type == "sketch-model-sticky") return "Sticky note";
                                         else if (element.type == "canvas-model-block") return "Block";
-                                        else if (element.type == "diagram-model-group") return "Group";
+                                        else if (element.type == "diagram-model-group") return element.name;
                                         else if (element.type == "diagram-model-connection") return "Connection";
                                         else return element.name;
                                     },
@@ -1092,7 +1092,10 @@ function createDialog(rootLayout,
                                     }
                                     if (targetObject.type == "browser") {
                                         let svg = "";
-                                        if ($(fieldObject).children().size() && $(fieldObject).is("archimate-diagram-model") || $(fieldObject).is("sketch-model") || $(fieldObject).is("canvas-model")) {
+                                        if ($(fieldObject).children().size() && $(fieldObject).is("archimate-diagram-model") || $(fieldObject).is("diagram-model-reference") || $(fieldObject).is("sketch-model") || $(fieldObject).is("canvas-model")) {
+                                            if ($(fieldObject).is("diagram-model-reference")) {
+                                                fieldObject = fieldObject.refView;
+                                            }
                                             let outputView = $(fieldObject).prop("dialog:outputView");
 
                                             if (outputView !== "false") svg = $.model.renderViewAsSVGString(fieldObject, true);
@@ -1158,6 +1161,7 @@ function createDialog(rootLayout,
                                                         doEventHandler("${fieldObject.id}", args);
                                                     };
                                                     function isValidUrl(url) {
+                                                        console.log(url)
                                                         try {
                                                             new URL(url);
                                                             return true;
@@ -1169,7 +1173,10 @@ function createDialog(rootLayout,
                                                         const links = document.querySelectorAll('a');
 
                                                         function handleLinkClick(event) {
-                                                            const destination = event.target.href;
+                                                            let destination = event.target.href;
+                                                            if (destination.startsWith("about:blank"))
+                                                                destination = destination.replace("about:blank","");
+                                                            console.log(destination)
                                                             if (!isValidUrl(destination)) {
                                                                 handleLink(event.target.innerText);
                                                                 event.preventDefault();
