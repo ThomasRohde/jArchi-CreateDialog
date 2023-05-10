@@ -20,6 +20,7 @@ After placing the files in the proper directories, please verify the `load()` st
 To use the library for the first time, open `jArchi Dialogs.archimate` in Archi and follow the instructions there. You will learn how to use the createDialog function and its parameters, how to design your dialog layout and content, how to add event handlers and validations, how to access and manipulate your Archi models from within your dialogs, and much more.
 # Introduction to the CreateDialog library #
 ![Introduction to the CreateDialog library](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/Introduction%20to%20the%20CreateDialog%20library.png)
+
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
 
 This code is the "Hello World" of CreateDialog.
@@ -107,21 +108,25 @@ The `topLevelType` can be one of the following types:
 
 ### form ###
 ![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
+
 Form description
 #### form ####
 
 ### group ###
 ![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
+
 Group description
 #### group ####
 
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
+
 Pages description
 #### pages ####
 
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
+
 Sash description
 #### sash ####
 
@@ -143,3 +148,20 @@ Widgets are the main interactive visual elements of the dialogs. Currently the a
 - [tree](#tree)
 - [scale](#scale)
 ## createDialog ##
+### Usage ###
+
+    let dialog = createDialog(dialogObject);
+
+or
+
+    let dialog = createDialog(dialogObject, options);
+
+If no options are given to the function, a standard Eclipse JFace TitleAndDialog dialog will we created.
+
+The function returns an dialog object providing the following functionalities:
+
+- [open()](#open) - opens a modal dialog and waits for the user to exit. Returns `true` if Ok, or similar, is pressed or `false` otherwise.
+- [persist()](#persist) - persists any changes to model objects and properties 
+- [dialogResult](#dialogresult) - the result of the dialog data entry formatted as an object
+
+Read about crafting a [dialogObject](#dialogobject).
