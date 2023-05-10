@@ -1,6 +1,10 @@
 
 # Archi Dialogs #
-CreateDialog is a user interface library to easily create Eclipse dialogs in Archi using the scripting plugin jArchi. CreateDialog abstracts the inner workings of Eclipse and Java, while providing enough UI complexity for many UI use cases that involvels modal dialogs for interacting with the underlying Archi models.
+Welcome to the Archi CreateDialog library.
+
+CreateDialog is a user interface library that enables you to create nice and functional Eclipse dialogs in Archi with ease. Whether you need to display information, collect input, or perform actions on your Archi models, CreateDialog has you covered. With CreateDialog, you don’t have to worry about the technical details of Eclipse and Java. You can focus on the design and logic of your dialogs, while still having access to a rich set of UI elements and features that can handle any UI challenge you throw at them.
+
+CreateDialog is powered by jArchi, the scripting plugin for Archi that lets you automate and extend Archi’s functionality with JavaScript. By combining the flexibility of jArchi with the simplicity of CreateDialog, you can unleash your creativity and productivity in building amazing user interfaces for your Archi projects.
 
 ### Quick start ###
 
@@ -13,7 +17,7 @@ To get started, download the following files from this repo:
 
 After placing the files in the proper directories, please verify the `load()` statements in `CreateEclipseForm.js`.
 
-To use the library for the first time, open `jArchi Dialogs.archimate` in Archi, and continue reading the documentation for CreateDialog there!
+To use the library for the first time, open `jArchi Dialogs.archimate` in Archi and follow the instructions there. You will learn how to use the createDialog function and its parameters, how to design your dialog layout and content, how to add event handlers and validations, how to access and manipulate your Archi models from within your dialogs, and much more.
 # Introduction to the CreateDialog library #
 ![Introduction to the CreateDialog library](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/Introduction%20to%20the%20CreateDialog%20library.png)
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
