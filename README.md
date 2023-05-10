@@ -1,6 +1,19 @@
 
 # Archi Dialogs #
-This model describes and documents the CreateDialog script library.
+CreateDialog is a user interface library to easily create Eclipse dialogs in Archi using the scripting plugin jArchi. CreateDialog abstracts the inner workings of Eclipse and Java, while providing enough UI complexity for many UI use cases that involvels modal dialogs for interacting with the underlying Archi models.
+
+### Quick start ###
+
+To get started, download the following files from this repo:
+
+- `CreateEclipseForm.js` - The main library containing the [createDialog](#createdialog) function. This should be placed in the `lib` directory
+- `Model browser.ajs`- A small application to view models that have been structured to support this library
+- `jArchi Dialogs.archimate` - A model that documents the library
+- `modeltrap.js` - a utility script to ensure that a model is selected. Should be place in the `lib` directory
+
+After placing the files in the proper directories, please verify the `load()` statements in `CreateEclipseForm.js`.
+
+To use the library for the first time, open `jArchi Dialogs.archimate` in Archi, and continue reading the documentation for CreateDialog there!
 # Introduction to the CreateDialog library #
 ![Introduction to the CreateDialog library](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/Introduction%20to%20the%20CreateDialog%20library.png)
 The CreateDialog library, creates dialogs in script from simple JavaScript object literals.
@@ -124,7 +137,46 @@ The `topLevelType` can be one of the following types:
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
 - [form](#form) - the form can both be a top level widget as well a simple widget used for grouping
+- [blank](#blank) - a placeholder widget - takes up one cell in the grid, but does nothing
+- [text](#text)
+- [browser](#browser)
+- [option](#option)
+- [combo](#combo)
+- [list](#list)
+- [checkbox](#checkbox)
+- [radio](#radio)
+- [button](#button)
+- [date](#date)
+- [color](#color)
+- [tree](#tree)
+- [scale](#scale)
 #### form-widget ####
+
+#### blank ####
+
+#### text ####
+
+#### browser ####
+
+#### option ####
+
+#### combo ####
+
+#### list ####
+
+#### checkbox ####
+
+#### radio ####
+
+#### button ####
+
+#### date ####
+
+#### color ####
+
+#### tree ####
+
+#### scale ####
 
 ## dialogResult ##
 The dialog result is available after the succesful execution of [createDialog]() as a member object.
