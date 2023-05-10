@@ -109,27 +109,27 @@ The `topLevelType` can be one of the following types:
 ### form ###
 ![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
 
-Form description
-#### form ####
 
+#### form ####
+A standard `form`, or composite, that can contain one or more widgetTypes
 ### group ###
 ![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
 
-Group description
-#### group ####
 
+#### group ####
+A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
 
-Pages description
-#### pages ####
 
+#### pages ####
+The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
 
-Sash description
-#### sash ####
 
+#### sash ####
+A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically
 ## Widgets ##
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
