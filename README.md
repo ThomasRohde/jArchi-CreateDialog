@@ -161,13 +161,13 @@ A `form` is a simple composite, that can contain one or more widgetTypes
 
 A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets
 #### group ####
-A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets
+
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
 
 The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 #### pages ####
-The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
+
 ### folder ###
 ![folder](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/folder.png)
 
