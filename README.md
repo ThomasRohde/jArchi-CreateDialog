@@ -134,22 +134,17 @@ The dialog result is available after the succesful execution of [createDialog]()
 
 The result is created as a flattened version of the dialogObject as supplied to the [creadteDialog]() function, where every member of the `properties` objects are created as new members with their current widget value as the value.
 ## Top-level widgets ##
-Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
+Top-level widgets are ...
 
-- [form](#formwidget) - the form can both be a top level widget as well a simple widget used for grouping
-- [blank](#blank) - a placeholder widget - takes up one cell in the grid, but does nothing
-- [text](#text)
-- [browser](#browser)
-- [option](#option)
-- [combo](#combo)
-- [list](#list)
-- [checkbox](#checkbox)
-- [radio](#radio)
-- [button](#button)
-- [date](#date)
-- [color](#color)
-- [tree](#tree)
-- [scale](#scale)
+-	A `form` is a simple composite, that can contain one or more widgetTypes. The implementation uses the Composite SWT widget, and uses a gridlayout with a user defined number of columns. The form will fill out the entire parent space.
+
+- A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets.
+
+- The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type.
+
+- A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically.
+
+- A `folder` is a composite of one or more forms. The forms are selectable by clicking a top level folder button.
 ### form ###
 ![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
 
@@ -166,17 +161,41 @@ A `form` is a simple composite, that can contain one or more widgetTypes. The im
 ### group ###
 ![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
 
+A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets.
 
+
+| Option | Values | Description |
+| :------ | :------ | :------------ |
+|fill|boolean|If `true` the `group`fills the available space|
+| columns | integer | Sets the number of columns in the grid. Default is `2` |
+| equalWidth | boolean | If true, the columns will have equal width. Default is `false` |
+|message|string|Inserts a label with the message text inserted as the first child. The text is italicized|
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
 
-
+The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
 ### folder ###
 ![folder](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/folder.png)
 
-
+A `folder` is a composite of one or more forms. The forms are selectable by clicking a top level folder button.
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
 
-
+A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically.
 ## Widgets ##
+Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
+
+- [form](#formwidget) - the form can both be a top level widget as well a simple widget used for grouping
+- [blank](#blank) - a placeholder widget - takes up one cell in the grid, but does nothing
+- [text](#text)
+- [browser](#browser)
+- [option](#option)
+- [combo](#combo)
+- [list](#list)
+- [checkbox](#checkbox)
+- [radio](#radio)
+- [button](#button)
+- [date](#date)
+- [color](#color)
+- [tree](#tree)
+- [scale](#scale)
