@@ -11,14 +11,16 @@ CreateDialog is powered by jArchi, the scripting plugin for Archi that lets you 
 To get started, download the following files from this repo:
 
 - `CreateEclipseForm.js` - The main library containing the [createDialog](#createdialog) function. This should be placed in the `lib` directory
-- `BrowseModel.js`- A small utility function to view models that have been structured to support this library
+- `BrowseModel.js`- A small utility function to view models that have been structured to support this library. This should be placed in the `lib` directory
 - `jArchi Dialogs.archimate` - A model that documents the library
 - `jArchi Dialogs Help.ajs` - Displays a help dialog using `BrowseModel.js` on the `jArchi Dialogs.archimate` model
 - `modeltrap.js` - a utility script to ensure that a model is selected. Should be place in the `lib` directory
 
 After placing the files in the proper directories, please verify the `load()` statements in `CreateEclipseForm.js`.
 
-To use the library for the first time, open `jArchi Dialogs.archimate` in Archi and follow the instructions there. You will learn how to use the createDialog function and its parameters, how to design your dialog layout and content, how to add event handlers and validations, how to access and manipulate your Archi models from within your dialogs, and much more.
+To use the library for the first time, open `jArchi Dialogs.archimate` in Archi, select it as the current model. Run the script `jArchi Dialogs Help.ajs` and follow the instructions there. 
+
+You will learn how to use the createDialog function and its parameters, how to design your dialog layout and content, how to add event handlers and validations, how to access and manipulate your Archi models from within your dialogs, and much more.
 # Introduction to the CreateDialog library #
 ![Introduction to the CreateDialog library](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/Introduction%20to%20the%20CreateDialog%20library.png)
 
