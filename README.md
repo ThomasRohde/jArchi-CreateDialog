@@ -11,8 +11,9 @@ CreateDialog is powered by jArchi, the scripting plugin for Archi that lets you 
 To get started, download the following files from this repo:
 
 - `CreateEclipseForm.js` - The main library containing the [createDialog](#createdialog) function. This should be placed in the `lib` directory
-- `Model browser.ajs`- A small application to view models that have been structured to support this library
+- `BrowseModel.js`- A small utility function to view models that have been structured to support this library
 - `jArchi Dialogs.archimate` - A model that documents the library
+- `jArchi Dialogs Help.ajs` - Displays a help dialog using `BrowseModel.js` on the `jArchi Dialogs.archimate` model
 - `modeltrap.js` - a utility script to ensure that a model is selected. Should be place in the `lib` directory
 
 After placing the files in the proper directories, please verify the `load()` statements in `CreateEclipseForm.js`.
@@ -105,6 +106,10 @@ The `dialogObject` describes the layout and functionality of a dialog as a JavaS
 		}
 	}
 
+Property names, e.g., `property1`, must be unique.
+
+The `type` member is alwasy required.
+
 The `topLevelType` can be one of the following types:
 
 - [form](#form) - A standard form, or composite, that can contain one or more `widgetTypes`
@@ -134,17 +139,17 @@ The dialog result is available after the succesful execution of [createDialog]()
 
 The result is created as a flattened version of the dialogObject as supplied to the [creadteDialog]() function, where every member of the `properties` objects are created as new members with their current widget value as the value.
 ## Top-level widgets ##
-Top-level widgets are ...
+Again, the available top-level widgets are:
 
--	A `form` is a simple composite, that can contain one or more widgetTypes. The implementation uses the Composite SWT widget, and uses a gridlayout with a user defined number of columns. The form will fill out the entire parent space.
+-	A `form` is a simple composite, that can contain one or more widgetTypes
 
-- A `group`composite of widgets framed by a titled border. Typically used on a form to group related widgets.
+- A `group` is a composite of widgets framed by a titled border
 
-- The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type.
+- The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page
 
-- A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically.
+- A `sash` is a composite of two or more forms separated with dividers
 
-- A `folder` is a composite of one or more forms. The forms are selectable by clicking a top level folder button.
+- A `folder` is a composite of one or more forms. The forms are stacked and selectable 
 ### form ###
 ![form](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/form.png)
 
@@ -158,6 +163,7 @@ A `form` is a simple composite, that can contain one or more widgetTypes. The im
 | equalWidth | boolean | If true, the columns will have equal width. Default is `false` |
 | margin | integer | Sets the margin around the `form` and the spacing between child widgets |
 | background | `org.eclipse.swt.graphics.Color` | Sets the background color of the `form`. Default is the system default|
+|next| function|Function to determine the next page based on the current value of the dialogObject|
 ### group ###
 ![group](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/group.png)
 
@@ -173,29 +179,89 @@ A `group`composite of widgets framed by a titled border. Typically used on a for
 ### pages ###
 ![pages](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/pages.png)
 
-The type `pages` are a sequence of `forms` that are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type
+The type `pages` are a sequence of `forms`, `group` or `sash` widget. The pages are navigated by buttons to advance or go back from the current page, as well as a finish button. Pages are only awailable for the wizard dialog type.
+
+Typically, the wizard can advance to the next page. However, pages in the wizard, can define a `next` function that takes the current state of the `dialogObject` and returns the name of the next page to advance to.
+
+The following examples displays a 3-page wizard. If you enter `last` in the text box on page 1, the Next button will jump to Page 3.
+
+    let dialog = createDialog(
+        {
+            type: "pages",
+            properties: {
+                page1: {
+                    type: "form",
+                    title: "Form",
+                    message: "This is page 1",
+                    next: function (values) {
+                        if (values.text1 == "last") return "page3";
+                    },
+                    properties: {
+                        text1: {
+                            type: "text",
+                            label: "Text",
+                        }
+                    }
+                },
+                page2: {
+                    type: "form",
+                    title: "Form",
+                    message: "This is page 2",
+                    properties: {
+                        text2: {
+                            type: "text",
+                            label: "Text",
+                        }
+                    }
+                },
+                page3: {
+                    type: "form",
+                    title: "Form",
+                    message: "This is page 3",
+                    properties: {
+                        text3: {
+                            type: "text",
+                            label: "Text",
+                        }
+                    }
+                }
+            }
+        },
+        { dialogType: "wizard" });
+
+    dialog.open();
+
+<button onclick="doEvent('Run')">Run!</button>
+
+There are no options for `pages`.
 ### folder ###
 ![folder](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/folder.png)
 
-A `folder` is a composite of one or more forms. The forms are selectable by clicking a top level folder button.
+A `folder` is a composite of one or more forms. Child properties (widgets) that are not of type `form`, `sash`, or `group` are ignored. The forms are selectable by clicking a top level folder button.
+
+There are no options.
+
 ### sash ###
 ![sash](https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/sash.png)
 
 A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically.
+
+| Option | Values | Description |
+| :------ | :------ | :------------ |
 ## Widgets ##
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
 - [form](#formwidget) - the form can both be a top level widget as well a simple widget used for grouping
 - [blank](#blank) - a placeholder widget - takes up one cell in the grid, but does nothing
-- [text](#text)
-- [browser](#browser)
-- [option](#option)
-- [combo](#combo)
-- [list](#list)
-- [checkbox](#checkbox)
-- [radio](#radio)
-- [button](#button)
-- [date](#date)
-- [color](#color)
-- [tree](#tree)
-- [scale](#scale)
+- [text](#text) - a text entry widget with support for password masking
+- [browser](#browser) - an embedded browser for optional HTML or URLs
+- [option](#option) - one or more radio buttons
+- [combo](#combo) - selection of one option from a drop-down list
+- [list](#list) - selection of one option from a list
+- [checkbox](#checkbox) - a selectable option 
+- [radio](#radio) - a single radio button, which interacts with other radio buttons within the same parent form (but not those defined with an `option`)
+- [button](#button) - a standard button which can trigger an optional function
+- [date](#date) - a date picker
+- [color](#color) - a color picker
+- [tree](#tree) - a tree browser of Archi collections
+- [scale](#scale) - a sliding scale
