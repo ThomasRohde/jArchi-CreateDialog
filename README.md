@@ -38,7 +38,7 @@ This code is the "Hello World" of CreateDialog.
     	dialog.persist();
 	};
 
-<button onclick="doEvent('Run')">Run!</button>
+
 
 Currently, the CreateDialog libray supports two kinds of dialogs, the TitleAndDialog dialog, and the Wizard dialog.
 ## titleAndDialog ##
@@ -73,7 +73,7 @@ The following example options object creates a dialog with three buttons:
                 }
             } 
     };
-<button onclick="doEvent('Run')">Run!</button>
+
 
 The `ok` and `cancel` buttons recreate the standard buttons in a normal dialog box. The test button displays new dialog when pressed.
 ## createDialog ##
@@ -233,7 +233,7 @@ The following examples displays a 3-page wizard. If you enter `last` in the text
 
     dialog.open();
 
-<button onclick="doEvent('Run')">Run!</button>
+
 
 There are no options for `pages`.
 ### folder ###
