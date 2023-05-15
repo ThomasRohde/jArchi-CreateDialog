@@ -248,8 +248,13 @@ There are no options.
 
 A `sash` is a composite of two or more forms separated with dividers, that can be moved to change the relative sizes of the sub-forms. The `sash´ can be layed out horizontally or vertically.
 
+The `sash` only support child widgets of type `form`.
+
 | Option | Values | Description |
 | :------ | :------ | :------------ |
+|direction|`horizontal` or `vertical`|Determines the spacial layout of a `sash`. Default is `horizontal`|
+|background|`Java.type('org.eclipse.swt.graphics.Color')`|Sets the background color of the `sash`. The background of a `sash` is the narrow margin around the vertical or horizontal divider.|
+|weights|`integer[]`|Set the relative weight of each child `form` in the `sash`. The weight represents the percent of the total width (if the `sash` has horizontal orientation) or total height (if the `sash` has vertical orientation) each `form` occupies| 
 ## Widgets ##
 Widgets are the main interactive visual elements of the dialogs. Currently the available widgets are:
 
