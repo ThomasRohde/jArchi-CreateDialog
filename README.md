@@ -135,7 +135,7 @@ The `options` paratemer sets a few global options for the dialog.
 ### open() ###
 This function opens the dialog, and returns truthy if an Ok button has been clicked.
 ### persist() ###
-
+The `tree` widget support edititing and changing the values of element properties displayed in the tree. The changes are maintained in a cache and are not immeadiately reflected in the model. Calling `persist()` after the successful execution of `open()` will persist the changes in the model.
 ### dialogResult ###
 The dialog result is available after the succesful execution of [createDialog]() as a member object.
 
