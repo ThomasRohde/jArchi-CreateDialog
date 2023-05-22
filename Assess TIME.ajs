@@ -1,0 +1,253 @@
+/*
+Author: Thomas Klok Rohde
+Description: Assess one or more Application Components according to the Gartner TIME model
+History: 
+    November 13, 2022   : Created
+    April 27, 2023      : Migrated to SWT/JFace
+*/
+
+console.show();
+console.clear();
+
+load(__SCRIPTS_DIR__ + 'Archi-scripts/lib/CreateEclipseForm.js');
+
+let app = $(selection).filter("application-component").first();
+if (app == undefined)
+    throw new Error("No application components selected");
+
+function group(name, title, tooltip, message, values) {
+    return {
+        type: "group",
+        title,
+        message,
+        fill: true,
+        columns: 1,
+        properties: {
+            [name + "Question"]: {
+                type: "option",
+                tooltip,
+                values,
+                value: values[2]
+            }
+        }
+    }
+}
+
+let TIMEwizard = {
+    type: "pages",
+    title: "TIME Assessment of Application",
+    message: "Application fitness assessments answer the question, “How well does this application fit current and emerging business needs and technical requirements?”",
+    properties: {
+        technology: {
+            type: "form",
+            title: "Assessment of technology fitness",
+            message: "What is the fitness of the technical stack that supports the application?",
+            columns: 3,
+            equalWidth: true,
+            properties: {
+                relianceGroup: group("reliance", "Reliance", "Assess reliance",
+                    "Measures how dependent a technical stack is on a single person\n(or very small group) for maintenance and enhancement of the\ntechnical stack and its applications.",
+                    [
+                        "1 (Worst) Inadequate staff, missing skills, restaffing risk",
+                        "2 (Below Average) Staff inadequate, some missing skills",
+                        "3 (Average) Staff adequate, restaffing requires recruiting",
+                        "4 (Better) Staff sufficient. External supply for restaffing",
+                        "5 (Best) Good pool of skilled staff with full backup"]),
+                maintainabilityGroup: group("maintainability", "Maintainability", "Assess maintainability",
+                    "Time, effort and risk to enhance or make functional or technical\nchanges to the technical stack or its applications. Includes\neffort required to integrate applications, and the difficulty and\nreliability of testing.",
+                    [
+                        "1 (Worst) Difficult to maintain, high cost and risk",
+                        "2 (Below Average) Unpredictable maintainability and risk",
+                        "3 (Average) Average maintainability",
+                        "4 (Better) Maintainability good, low risk and cost",
+                        "5 (Best) Can be maintained efficiently without risk"]),
+                vendorGroup: group("vendor", "Vendor", "Assess vendor support",
+                    "Measures the level of support of the software products in use in\nthe technical stack and the sustainability of the vendor(s).",
+                    [
+                        "1 (Worst) Products are unsupported or vendor in trouble",
+                        "2 (Below Average) Products support will end",
+                        "3 (Average) Good support now, concerns on future",
+                        "4 (Better) Strong support but unclear future commitment",
+                        "5 (Best) Strong vendor and products are strategic"]),
+                alignmentGroup: group("alignment", "Architectural Alignment", "Assess architectural alignment",
+                    "Is the technical stack aligned to the current architectural\ndirection and standards of the organization.",
+                    [
+                        "1 (Worst) Non-compliant and unacceptable",
+                        "2 (Below Average)  Non-compliant, but acceptable",
+                        "3 (Average) Partially aligned, acceptable deviations",
+                        "4 (Better) Aligned insignificant deviations",
+                        "5 (Best)  Fully aligned with current architecture"]),
+                stabilityGroup: group("stability", "Production Stability", "Assess propduction stability",
+                    "How reliable and stable the technical stack performs. It\nincludes aspects like availability, fault tolerance and recoverability.",
+                    [
+                        "1 (Worst) Major reliability problems with severe impacts",
+                        "2 (Below Average) Persistent issues requiring remediation",
+                        "3 (Average) Acceptable stability and reliability",
+                        "4 (Better) Intermittent issues of stability",
+                        "5 (Best)  No issues of reliability or recoverability"]),
+                securityGroup: group("security", "Security", "Assess security",
+                    "How well does the technical stack protect information,\ndata and functions from unauthorized use or extraction.",
+                    [
+                        "1 (Worst) Lack of security making protection impossible",
+                        "2 (Below Average)  Known security vulnerabilities",
+                        "3 (Average) Basic security for unauthorized access",
+                        "4 (Better) Secure with some acceptable ommisions",
+                        "5 (Best) Secure with authorization, tracing and auditing support."]),
+                cloudGroup: group("cloud", "Cloud Suitability", "Assess cloud readiness",
+                    "How suited is the application for moving to the cloud.",
+                    [
+                        "1 (Worst) Impossible to move to cloud.",
+                        "2 (Below Average)  Difficult to refactor for cloud",
+                        "3 (Average) Average refactoring for cloud",
+                        "4 (Better) Minimal refactoring for cloud",
+                        "5 (Best)  Cloud Native"])
+            }
+        },
+        business: {
+            type: "form",
+            title: "Assessment of business fitness",
+            message: "How well does the application support the business?",
+            columns: 3,
+            equalWidth: true,
+            properties: {
+                businessfitGroup: group("businessfit", "Business Fit", "Assess cloud readiness",
+                    "How well does the application supports the business\ncapabilities or processes from a user perspective.",
+                    [
+                        "1 (Worst) Poor alignment, significant deficiencies",
+                        "2 (Below Average)  Weak, some deficiencies in support",
+                        "3 (Average) Acceptable, some misalignment or gaps",
+                        "4 (Better) Good Fit and support of needs",
+                        "5 (Best)  Strong fit to and support of business needs"]),
+                qualityGroup: group("quality", "Information Quality, Timeliness, and Privacy", "Assess quality",
+                    "Integrity of data management and transformation, quality\nand utility of data presentation, data and information are\navailable to employees or customers when they need it.",
+                    [
+                        "1 (Worst) Poor, significant persistent deficiencies",
+                        "2 (Below Average) Weak, some persistent deficiencies",
+                        "3 (Average) Acceptable, some intermittent quality issues",
+                        "4 (Better) Meeting quality, timeliness and privacy reqs.",
+                        "5 (Best) Excellent information quality in all aspects"]),
+                potentialGroup: group("potential", "Future Potential", "Assess potential",
+                    "Will the application support future known business requirements.",
+                    [
+                        "1 (Worst) Contained to current uses, planned retirement",
+                        "2 (Below Average) Tactical, declining role",
+                        "3 (Average) Tactical, stable role",
+                        "4 (Better) Strategic to some functions, future role variable",
+                        "5 (Best) Strategic and of increasing importance"]),
+                privacyGroup: group("privacy", "Privacy", "Assess privacy",
+                    "Whether sensitive personal data is protected and processed\nto meet internal and external regulations.",
+                    [
+                        "1 (Worst) Fully exposed and non-compliant",
+                        "2 (Below Average) Deficient and potentially vunerable",
+                        "3 (Average) Fully meets regulations",
+                        "4 (Better) Fully meets regulations and has some add. protections",
+                        "5 (Best) Fully meets regulations and has robust protections"])
+            }
+        },
+        cost: {
+            type: "form",
+            title: "Assessment of cost",
+            message: "Assessment of the cost profile of the application",
+            columns: 1,
+            equalWidth: true,
+            properties: {
+                costGroup: group("cost", "Cost Fit", "Assess cost profile",
+                    "Is the cost profile acceptable?",
+                    [
+                        "1 (Worst) High, increasing, unpredictable",
+                        "2 (Below Average) Higher than average, increasing ",
+                        "3 (Average) Average, stable",
+                        "4 (Better) Below average, trending down",
+                        "5 (Best)  Low, predictable"
+                    ])
+            }
+        }
+    }
+}
+
+let helpPopup = {
+    type: "form",
+    title: "TIME Help",
+    columns: 1,
+    properties: {
+        browser: {
+            type: "browser",
+            value: /*html*/ `
+            <html>
+            <body style="margin:4;padding:0">
+                <div style='font-family: Segoe UI;font-size: 12'>
+                <h1>The Gartner TIME model</h1>
+                <p>The Gartner TIME model is a methodology for evaluating an organization's application portfolio based on its technical and functional fit. TIME stands for Tolerate, Invest, Migrate, and Eliminate. The model helps organizations understand the baseline state of their application portfolio and identify candidate applications to trim waste and optimize the portfolio.</p>
+                <p>To evaluate applications accordingly, organizations should assess each application against its technical and functional fit. Applications that are deemed to be a good fit should be invested in, while those that are not a good fit should be eliminated. Applications that are not a good fit but are still necessary should be tolerated, and those that are a good fit but need to be updated should be migrated.</p>
+                <p>Best practices for evaluating applications include conducting a thorough analysis of the application portfolio, identifying the business value of each application, and assessing the technical and functional fit of each application. Organizations should also consider the cost of maintaining each application and the potential risks associated with each application</p>
+                </div>
+            </body>
+            </html>`,
+            fill: true,
+            multi: true,
+        }
+    }
+}
+
+let customOptions = {
+    dialogType: "wizard",
+    modal: true,
+    trim: "shell",
+    help: function () {
+        let helpDialog = createDialog(helpPopup, {
+            dialogType: "titleAndDialog",
+            width: 600,
+            height: 800
+        });
+        helpDialog.open();
+    },
+    finish: function (result) {
+        if (result) {
+            let TIME = computeAssessment(result);
+            app.prop("TIME Business", parseFloat(TIME.business).toFixed(2));
+            app.prop("TIME Technology", parseFloat(TIME.technology).toFixed(2));
+            app.prop("TIME Cost", parseFloat(TIME.cost).toFixed(2))
+            let TIMEquadrant = "Uncertain";
+            if (TIME.business > 3.1 && TIME.technology > 3.1) TIMEquadrant = "Invest";
+            if (TIME.business < 2.9 && TIME.technology < 2.9) TIMEquadrant = "Eliminate";
+            if (TIME.business > 3.1 && TIME.technology < 2.9) TIMEquadrant = "Migrate";
+            if (TIME.business < 2.9 && TIME.technology > 3.1) TIMEquadrant = "Tolerate";
+
+            window.alert(`Suggested TIME quadrant for ${app.name} is ${TIMEquadrant}.
+            
+Fitness scores:
+          
+    Technology fitness: ${app.prop("TIME Technology")}
+    Business fitness: ${app.prop("TIME Business")}
+    Cost fitness: ${app.prop("TIME Cost")}`);
+        }
+    }
+};
+
+function computeAssessment(assessed) {
+    function optionValue(str) {
+        return parseInt(str.slice(0, 1));
+    }
+    let assessment = {
+        cost: optionValue(assessed.cost.costGroup.costQuestion) * 1.0,
+    };
+    reliance = optionValue(assessed.technology.relianceGroup.relianceQuestion) * 0.15;
+    maintainability = optionValue(assessed.technology.maintainabilityGroup.maintainabilityQuestion) * 0.15;
+    vendor = optionValue(assessed.technology.vendorGroup.vendorQuestion) * 0.15;
+    alignment = optionValue(assessed.technology.alignmentGroup.alignmentQuestion) * 0.10;
+    stability = optionValue(assessed.technology.stabilityGroup.stabilityQuestion) * 0.15;
+    security = optionValue(assessed.technology.securityGroup.securityQuestion) * 0.15;
+    cloud = optionValue(assessed.technology.cloudGroup.cloudQuestion) * 0.15;
+
+    businessfit = optionValue(assessed.business.businessfitGroup.businessfitQuestion) * 0.30;
+    quality = optionValue(assessed.business.qualityGroup.qualityQuestion) * 0.30;
+    potential = optionValue(assessed.business.potentialGroup.potentialQuestion) * 0.30;
+    privacy = optionValue(assessed.business.privacyGroup.privacyQuestion) * 0.10;
+    assessment.technology = reliance + maintainability + vendor + alignment + stability + security + cloud;
+    assessment.business = businessfit + quality + potential + privacy;
+    return assessment;
+}
+
+let dialog = createDialog(TIMEwizard, customOptions);
+
+dialog.open();
