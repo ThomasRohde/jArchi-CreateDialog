@@ -1,4 +1,4 @@
-# Archi Dialogs - Beta 0.9#
+# Archi Dialogs - Beta 0.9 #
 Welcome to the Archi CreateDialog library.
 
 CreateDialog is a user interface library that enables you to create nice and functional Eclipse dialogs in Archi with ease. Whether you need to display information, collect input, or perform actions on your Archi models, CreateDialog has you covered. With CreateDialog, you don’t have to worry about the technical details of Eclipse and Java. You can focus on the design and logic of your dialogs, while still having access to a rich set of UI elements and features that can handle any UI challenge you throw at them.
