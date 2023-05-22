@@ -9,7 +9,10 @@ function runModelBrowser(objects, options = {}) {
     const outputSVG = false;
     const outputImages = true;
 
-    let { buttonActions, outputMarkdown, githubImageDirectory } = options;    
+    let { buttonActions, outputMarkdown, githubImageDirectory, filter, icons, toolbar } = options;    
+    if (!filter) filter = false;
+    if (!icons) icons = false;
+    if (!toolbar) toolbar = false;
     if (!githubImageDirectory) githubImageDirectory = "https://github.com/ThomasRohde/jArchi-CreateDialog/blob/main/images/";
 
     function documentModel(path) {
@@ -27,12 +30,12 @@ function runModelBrowser(objects, options = {}) {
             let outputChildren = true;
             if ($(element).is("diagram-model-reference")) {
                 title = outputMarkdown ? titleString(level, element.refView.name) : marked.parse(titleString(level, element.refView.name));
-                body = outputMarkdown ? element.refView.documentation : marked.parse(element.refView.documentation);
+                body = outputMarkdown ? element.refView.documentation.replace(/<button.*?<\/button>/g, '') : marked.parse(element.refView.documentation);
                 outputChildren = false;
             }
             else {
                 title = outputMarkdown ? titleString(level, element.name) : marked.parse(titleString(level, element.name));
-                body = outputMarkdown ? element.documentation : marked.parse(element.documentation);
+                body = outputMarkdown ? element.documentation.replace(/<button.*?<\/button>/g, '') : marked.parse(element.documentation);
             }
             let image = "";
             if (outputSVG && $(element).is("archimate-diagram-model") || $(element).is("diagram-model-reference") || $(element).is("sketch-model") || $(element).is("canvas-model")) {
@@ -76,7 +79,7 @@ function runModelBrowser(objects, options = {}) {
 
         let body = outputMarkdown ? markdown : marked.parse(markdown) + "\n";
 
-        let elements = $(".Introduction to the CreateDialog library").add(".Creating a dialog");
+        let elements = objects;
         elements.each(e => {
             body += outputElement(1, e);
         })
@@ -159,6 +162,16 @@ function runModelBrowser(objects, options = {}) {
         return output;
     }
 
+    function cloneWithoutEmpty(obj) {
+        let newObj = {};
+        for (let key in obj) {
+            if (obj[key] !== null && obj[key] !== undefined && obj[key] !== "" && !(typeof obj[key] === 'object' && Object.keys(obj[key]).length === 0)) {
+                newObj[key] = obj[key];
+            }
+        }
+        return newObj;
+    }
+
     let browserButton = function (element, buttonId) {
         if (!buttonActions) {
             window.alert(`You pressed the button '${buttonId}' in element '${element.name}'`);
@@ -174,6 +187,10 @@ function runModelBrowser(objects, options = {}) {
             else
                 showDialog = createDialog(dialog);
             showDialog.open();
+            console.log(`You pressed the button '${buttonId}' in element '${element.name}'. The result of the dialog is: `)
+            console.log(JSON.stringify(cloneWithoutEmpty(showDialog.dialogResult), function (key, value) { 
+                if (value instanceof Object && value.id) return value.toString(); else return value;
+            }, 2))
         }
         catch (e) {
             console.log("Something went wrong executing a browser action");
@@ -197,6 +214,9 @@ function runModelBrowser(objects, options = {}) {
                         fill: true,
                         relations: false,
                         objects: objects,
+                        filter: filter,
+                        icons: icons,
+                        toolbar: toolbar,
                         tooltip: "Select tree item",
                         selection: [{
                             source: "documentation",
@@ -225,8 +245,8 @@ function runModelBrowser(objects, options = {}) {
 
     let customOptions = {
         dialogType: "titleAndDialog",
-        width: 1000,
-        height: 600,
+        width: 3*shell.getDisplay().getBounds().width/5,
+        height: 3*shell.getDisplay().getBounds().height/5,
         buttons: {
             Markdown: {
                 label: "Markdown",
@@ -242,7 +262,7 @@ function runModelBrowser(objects, options = {}) {
                         window.alert(`Markdown exported to: ` + path + `${model.name}\\`);
                     }
                     catch (e) {
-                        window.alert("Some thing went wrong!", e);
+                        window.alert("Something went wrong!", e);
                     }
                 }
             },

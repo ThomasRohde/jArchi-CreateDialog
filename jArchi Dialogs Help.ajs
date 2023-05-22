@@ -88,21 +88,264 @@ let buttonActions = {
                 type: "form",
                 title: "Hello",
                 message: "World"
-            },
-            options: null
+            }
         }
-    }
+    },
+    "text": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Text widget",
+                message: "A form with a text entry widget and a password entry widget",
+                properties: {
+                    text: {
+                        type: "text",
+                        label: "Text",
+                        message: "This is a text field",
+                        tooltip: "This is a tooltip text field",
+                        fill: true
+                    },
+                    password: {
+                        type: "text",
+                        label: "Password",
+                        message: "Enter a password",
+                        tooltip: "The password must be longer than 6",
+                        error: "The password must be longer than 6",
+                        verify: input => { return (input.length > 6) },
+                        echo: "*"
+                    }
+                }
+            }
+        }
+    },
+    "browser": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Hello",
+                message: "World"
+            }
+        }
+    },
+    "option": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Option widget",
+                message: "This is an option widget with three options, and Option 2 is pre-selected",
+                properties: {
+                    options: {
+                        type: "option",
+                        values: ["Option 1", "Option 2", "Option 3"],
+                        tooltip: "Select an option",
+                        label: "Options",
+                        value: "Option 2"
+                    }
+                }
+            }
+        }
+    },
+    "combo": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Combo widget",
+                message: "This is two combo widgets. The second combo can create new options to choose.",
+                columns: 2,
+                properties: {
+                    combo: {
+                        type: "combo",
+                        label: "Combo 1",
+                        value: "Value 1",
+                        values: ["Value 1", "Value two", "Value three"],
+                        tooltip: "Select a value from the list"
+                    },
+                    combo2: {
+                        type: "combo",
+                        label: "Combo 2",
+                        values: ["Value 1", "Value 2", "Value three"],
+                        tooltip: "Enter new value and press Enter",
+                        extend: true
+                    }
+                }
+            }
+        }
+    },
+    "list": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "List widget",
+                message: "This is a list widget",
+                columns: 2,
+                properties: {
+                    list: {
+                        type: "list",
+                        label: "List",
+                        value: "List item 3",
+                        values: ["List item 1", "List item 2", "List item 3", "List item 4"],
+                        tooltip: "Select a value from the list"
+                    }
+                }
+            }
+        }
+    },
+    "checkbox": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Checkbox widget",
+                message: "This is a checkbox widget",
+                columns: 2,
+                properties: {
+                    checkbox: {
+                        type: "checkbox",
+                        label: "Check box",
+                        message: "Enable text widget",
+                        enable: "text",
+                        value: true
+                    },
+                    text: {
+                        type: "text",
+                        label: "Text",
+                        message: "This is a text field",
+                        tooltip: "This is a tooltip text field",
+                        fill: true
+                    }
+                }
+            }
+        }
+    },
+    "radio": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Radio widget",
+                message: "This is two radio widgets interacting",
+                properties: {
+                    radio1: {
+                        type: "radio",
+                        tooltip: "Radio 1",
+                        label: "Radio 1",
+                    },
+                    radio2: {
+                        type: "radio",
+                        tooltip: "Radio 2",
+                        label: "Radio 2",
+                    }
+                }
+            }
+        }
+    },
+    "button": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Button widget",
+                message: "This is a button widget",
+                properties: {
+                    button: {
+                        type: "button",
+                        label: "Button",
+                        message: "Click me!",
+                        tooltip: "Click to alert",
+                        selection: function (button, widget) {
+                            window.alert(`You pressed "${button}" on widget "${widget}"`);
+                            return "Clicked";
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "date": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Date widget",
+                message: "This is a date widget",
+                properties: {
+                    date: {
+                        type: "date",
+                        label: "Date",
+                        tooltip: "Select a date"
+                    }
+                }
+            }
+        }
+    },
+    "color": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Color widget",
+                message: "This is a color widget",
+                properties: {
+                    color: {
+                        type: "color",
+                        value: { red: 255, green: 0, blue: 0 },
+                        label: "Color",
+                        tooltip: "Select a color"
+                    }
+                }
+            }
+        }
+    },
+    "scale": {
+        "Run": {
+            dialog: {
+                type: "form",
+                title: "Scale widget",
+                message: "This is a scale widget",
+                properties: {
+                    scale: {
+                        type: "scale",
+                        value: 10,
+                        min: 0,
+                        max: 100,
+                        label: "Scale",
+                        tooltip: "Select a value"
+                    }
+                }
+            }
+        }
+    },
+    "tree": {
+        "Run": {
+            dialog: {
+                type: "tree",
+                title: "Tree widget",
+                message: "This is a tree widget",
+                properties: {
+                    tree: {
+                        type: "tree",
+                        title: [],
+                        fill: true,
+                        filter: true,
+                        editable: true,
+                        toolbar: true,
+                        icons: true,
+                        objects: $("*"),
+                        tooltip: "Select tree item"
+                    }
+                }
+            },
+            options: {
+                dialogType: "titleAndDialog",
+                width: 800,
+                height: 600
+            }
+        }
+    },
 }
 
-if (!model ||  model.name !== "Archi Dialogs") {
+
+if (!model || model.name !== "Archi Dialogs") {
     window.alert("Please select the model 'Archi Dialogs' and run again");
     exit();
 }
 
 let objects = $(".Introduction to the CreateDialog library").add(".Creating a dialog");
 
-runModelBrowser(objects, { buttonActions: buttonActions, outputMarkdown: true });
-
-
-
+runModelBrowser(objects, { buttonActions: buttonActions, outputMarkdown: true, filter: false, icons: false });
 

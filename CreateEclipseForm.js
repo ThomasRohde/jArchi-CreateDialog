@@ -6,7 +6,6 @@ History:
 */
 
 load(__DIR__ + "marked.js");
-//load('https://cdn.jsdelivr.net/npm/marked/marked.min.js');
 
 let parentShell = shell;
 
@@ -208,7 +207,8 @@ function createDialog(rootLayout,
                         let treeItems = propertyDefinition.widget.getTree().getSelection();
                         let elements = [];
                         for (const item of treeItems) {
-                            elements.push(item.getData());
+                            let archiElement = $("#"+item.getData().id).first(); // Coerce to Archi object.
+                            elements.push(archiElement);
                         }
                         result[property] = elements;
                         break;
@@ -443,14 +443,15 @@ function createDialog(rootLayout,
             case "group":
                 // The group type creates a new composite (group), and then calls createFormContents to add widgets to it
                 container = new Group(parent, style);
+                if (margin === undefined) margin = 5;
                 if (fill)
                     container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
                 else
                     container.setLayoutData(new GridData(SWT.BEGINNING, SWT.BEGINNING, false, false));
                 if (equalWidth)
-                    GridLayoutFactory.swtDefaults().numColumns(columns).margins(5, 5).spacing(10, 5).equalWidth(equalWidth).applyTo(container);
+                    GridLayoutFactory.swtDefaults().numColumns(columns).margins(margin, margin).spacing(margin, margin).equalWidth(equalWidth).applyTo(container);
                 else
-                    GridLayoutFactory.swtDefaults().numColumns(columns).margins(5, 5).spacing(10, 5).applyTo(container);
+                    GridLayoutFactory.swtDefaults().numColumns(columns).margins(margin, margin).spacing(margin, margin).applyTo(container);
                 if (message) {
                     let messageLabel = new LabelWidget(container, SWT.NONE | SWT.WRAP);
                     messageLabel.setText(message);
@@ -645,7 +646,7 @@ function createDialog(rootLayout,
         for (const property in layout.properties) {
             let propertyDefinition = layout.properties[property];
             let propertyType = propertyDefinition.type;
-            let { message, tooltip, echo, values, value, extend, span, breakrow, min, max, border, doEvent, relations, tree, fill, enable, disabled, selection, multi, verify, title, filter, objects, editable, toolbar } = propertyDefinition;
+            let { message, tooltip, echo, values, value, extend, span, direction, breakrow, min, max, icons, border, doEvent, relations, tree, fill, enable, disabled, selection, multi, verify, title, filter, objects, editable, toolbar } = propertyDefinition;
             //let label = propertyDefinition.label ? propertyDefinition.label : property;
             let label = propertyDefinition.label ? propertyDefinition.label : null;
             let style = SWT.NONE;
@@ -654,7 +655,7 @@ function createDialog(rootLayout,
                 if (propertyType != "blank") {
                     labelWidget.setText(label);
                     gridData = new GridData();
-                    gridData.verticalAlignment = GridData.BEGINNING;
+                    //gridData.verticalAlignment = GridData.VERTICAL_ALIGN_CENTER;
                     labelWidget.setLayoutData(gridData);
                 }
                 else {
@@ -719,14 +720,13 @@ function createDialog(rootLayout,
                             let fncButton = new CustomFunction(propertyDefinition.widget, "doEventHandler", {
                                 function: function (args) {
                                     if (doEvent && doEvent instanceof Function) {
-                                        let element = $("#"+args[0]).first();
+                                        let element = $("#" + args[0]).first();
                                         doEvent(element, args[1]);
                                     }
                                 }
                             });
                             let fncLink = new CustomFunction(propertyDefinition.widget, "handleLink", {
                                 function: function (args) {
-                                    // ToDo: Lookup the arg in the model and find the element in the tree, if any.
                                     treeWidget = findWidget(dialogObject, tree);
                                     if (treeWidget) {
                                         let treeViewer = treeWidget.widget;
@@ -751,7 +751,10 @@ function createDialog(rootLayout,
                 case "option":
                     propertyDefinition.widget = new Composite(container, SWT.NONE);
                     if (tooltip) propertyDefinition.widget.setToolTipText(tooltip);
-                    propertyDefinition.widget.setLayout(new FillLayout(SWT.VERTICAL));
+                    if (direction == "horizontal")
+                        propertyDefinition.widget.setLayout(new FillLayout(SWT.HORIZONTAL));
+                    else
+                        propertyDefinition.widget.setLayout(new FillLayout(SWT.VERTICAL));
                     for (let option of values) {
                         let button = new ButtonWidget(propertyDefinition.widget, SWT.RADIO);
                         if (tooltip) button.setToolTipText(tooltip);
@@ -776,7 +779,10 @@ function createDialog(rootLayout,
                     });
                     break;
                 case "list":
-                    propertyDefinition.widget = new ListWidget(container, SWT.SINGLE | SWT.BORDER);
+                    if (multi)
+                        propertyDefinition.widget = new ListWidget(container, SWT.MULTI | SWT.BORDER);
+                    else
+                        propertyDefinition.widget = new ListWidget(container, SWT.SINGLE | SWT.BORDER);
                     if (tooltip) propertyDefinition.widget.setToolTipText(tooltip);
                     //propertyDefinition.widget.setLayout(new FillLayout());
                     propertyDefinition.widget.setItems(values);
@@ -827,7 +833,7 @@ function createDialog(rootLayout,
                 case "color":
                     propertyDefinition.widget = new ButtonWidget(container, SWT.TOGGLE);
                     if (tooltip) propertyDefinition.widget.setToolTipText(tooltip);
-                    if (value && value instanceof RGB) {
+                    if (value) {
                         propertyDefinition.widget.setImage(createColoredImage(24, 24, value));
                     }
                     else {
@@ -904,7 +910,11 @@ function createDialog(rootLayout,
                                     addTool.setImage(IArchiImages.ImageFactory.getImage(IArchiImages.ECLIPSE_IMAGE_FOLDER));
                                     addTool.setToolTipText("Replace objects in the tree");
                                     addTool.addListener(SWT.Selection, e => {
-                                        let dialog = createDialog(modelDialog);
+                                        let dialog = createDialog(modelDialog, {
+                                            dialogType: "titleAndDialog",
+                                            width: 600,
+                                            height: 400
+                                        });
                                         if (dialog.open()) {
                                             let newObjects = $("#null");
                                             if (dialog.dialogResult.includeFolders) newObjects = newObjects.add($("folder"));
@@ -942,10 +952,6 @@ function createDialog(rootLayout,
                             if (title.length == 0 && objects.size() > 0) {
                                 // Empty title array will produce default columns with all properties from all objects
                                 title = [["Name", "name"], ...Array.from(getProperties(objects))];
-                            }
-                            else {
-                                title = ["name"];
-                                showTitle = false;
                             }
                         }
                         else {
@@ -1007,7 +1013,8 @@ function createDialog(rootLayout,
                                         else return element.name;
                                     },
                                     getImage: function (element) {
-                                        return elementIcon(element);
+                                        if (icons) return elementIcon(element);
+                                        else return null;
                                     },
                                     getFont: function (element) {
                                         if (treeModel.filteredTree) return FilteredTree.getBoldFont(element, treeModel.filteredTree, treeModel.filteredTree.getPatternFilter());
@@ -1053,7 +1060,7 @@ function createDialog(rootLayout,
                         propertyDefinition.widget.getTree().addListener(SWT.Expand, e => {
                             let treeItem = e.item;
                             let treeColumns = treeItem.getParent().getColumns();
-                            if (treeItem.getData().type == "folder")
+                            if (treeItem.getData().type == "folder" && icons)
                                 treeItem.setImage(IArchiImages.ImageFactory.getImage(IArchiImages.ECLIPSE_IMAGE_FOLDER));
                             shell.getDisplay().asyncExec(new Runnable({
                                 run: function () {
@@ -1065,7 +1072,7 @@ function createDialog(rootLayout,
                         });
                         propertyDefinition.widget.getTree().addListener(SWT.Collapse, e => {
                             let treeItem = e.item;
-                            if (treeItem.getData().type == "folder")
+                            if (treeItem.getData().type == "folder" && icons)
                                 treeItem.setImage(IArchiImages.ImageFactory.getImage(IArchiImages.ICON_FOLDER_DEFAULT));
                         });
                         if (fill) propertyDefinition.widget.getTree().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
@@ -1076,9 +1083,9 @@ function createDialog(rootLayout,
                                     let targetObject = findWidget(dialogObject, target)
                                     let targetWidget = targetObject.widget;
                                     let field = source ? source : "name";
-                                    
+
                                     let fieldObject = e.getSelection().iterator().next();
-                                    fieldObject = $("#"+fieldObject.id).first(); // Coerce to Archi object.
+                                    fieldObject = $("#" + fieldObject.id).first(); // Coerce to Archi object.
                                     let fieldValue = "No value";
                                     switch (field) {
                                         case "name":
@@ -1112,6 +1119,13 @@ function createDialog(rootLayout,
                                         html = /*html*/ `
                                             <html>
                                                 <style>
+                                                    svg {
+                                                        width: 75%;
+                                                        display: block;
+                                                        margin-left: auto;
+                                                        margin-right: auto;
+                                                        margin-top: 20; 
+                                                    }
                                                     table {
                                                         font-size: 12px;
                                                         width: 100%;
@@ -1155,6 +1169,10 @@ function createDialog(rootLayout,
                                                         background-color: #134EB0;
                                                         color: white;
                                                     }
+                                                    button:disabled {
+                                                        background-color: #FEFEFE;
+                                                        color: #666666;
+                                                    }
                                                 </style>
                                                 <script type="text/javascript">
                                                     function doEvent(...args) {
@@ -1189,8 +1207,12 @@ function createDialog(rootLayout,
                                                     document.addEventListener('DOMContentLoaded', attachLinkInspectHandler);
                                                 </script>
                                                 <body style="margin:4;padding:0">
+                                                    <div style="position: fixed; top: 0; width: 100%;">
+                                                        <button id="backButton" onclick="window.history.back()" style="background-color: white; color: black; padding: 0px 0px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px;">&#8592;</button>
+                                                        <button id="forwardButton" onclick="window.history.forward()" style="background-color: white; color: black; padding: 0px 0px; text-align: center; text-decoration: none; display: inline-block; font-size: 12px;">&#8594;</button>
+                                                    </div>
                                                     ${svg}
-                                                    <div style='font-family: Segoe UI;font-size: 12'>
+                                                    <div style='margin-top:20;font-family: Segoe UI;font-size: 12'>
                                                         ${html}
                                                     </div>
                                                 </body>
