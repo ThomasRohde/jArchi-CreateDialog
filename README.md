@@ -1,4 +1,5 @@
-# Archi Dialogs - Beta 0.9 #
+
+# Archi Dialogs 0.9 #
 Welcome to the Archi CreateDialog library.
 
 CreateDialog is a user interface library that enables you to create nice and functional Eclipse dialogs in Archi with ease. Whether you need to display information, collect input, or perform actions on your Archi models, CreateDialog has you covered. With CreateDialog, you don’t have to worry about the technical details of Eclipse and Java. You can focus on the design and logic of your dialogs, while still having access to a rich set of UI elements and features that can handle any UI challenge you throw at them.
@@ -363,6 +364,8 @@ The `doEvent` event handler is an option to the `browser`, and should be a funct
 Links to [external](https://www.google.com) sites also work.
 
 <mark>Currently, there is a bug, either in the script or in Eclipse, that prevents showing two `browser` widgets inside two dialogs at the same time, which is why there is no demo for this widget.</mark>
+
+<mark>You may have to change the type of browser in `CreateEclipseForm.js`. It is currently set to use EDGE.</mark>
 
 The `browser` widget support the following options.
 
