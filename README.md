@@ -1,5 +1,4 @@
-
-# Archi Dialogs 0.9 #
+# Archi Dialogs #
 Welcome to the Archi CreateDialog library.
 
 CreateDialog is a user interface library that enables you to create nice and functional Eclipse dialogs in Archi with ease. Whether you need to display information, collect input, or perform actions on your Archi models, CreateDialog has you covered. With CreateDialog, you don’t have to worry about the technical details of Eclipse and Java. You can focus on the design and logic of your dialogs, while still having access to a rich set of UI elements and features that can handle any UI challenge you throw at them.
@@ -16,6 +15,7 @@ To get started, download the following files from this repo:
 - `jArchi Dialogs Help.ajs` - Displays a help dialog using `BrowseModel.js` on the `jArchi Dialogs.archimate` model
 - `modeltrap.js` - a utility script to ensure that a model is selected. Should be place in the `lib` directory
 - `Assess TIME.ajs` - an example dialog based application for assessing Application Components according to the Gartner TIME model (Tolerate-Invest-Migrate-Eliminate)
+- `marked.js` - A Markdown processor - thanks to [https://marked.js.org/](https://marked.js.org/) 
 
 After placing the files in the proper directories, please verify the `load()` statements in `CreateEclipseForm.js`.
 
