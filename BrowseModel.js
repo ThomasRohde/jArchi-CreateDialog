@@ -245,8 +245,8 @@ function runModelBrowser(objects, options = {}) {
 
     let customOptions = {
         dialogType: "titleAndDialog",
-        width: 3*shell.getDisplay().getBounds().width/5,
-        height: 3*shell.getDisplay().getBounds().height/5,
+        width: 3*shell.getDisplay().getMonitors()[0].getBounds().width/5,
+        height: 3*shell.getDisplay().getMonitors()[0].getBounds().height/5,
         buttons: {
             Markdown: {
                 label: "Markdown",
